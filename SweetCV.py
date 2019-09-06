@@ -46,7 +46,8 @@ def make_mask(width, height, point_json, mask_color):
         point_del = np.array((point['del'][str(i)]), np.int32).reshape((-1, 1, 2))
         cv2.fillPoly(img2, [point_del], mask_color[:3])
 
-    img = img - img2
+    img = cv2.subtract(img, img2)
+
     b_channel, g_channel, r_channel = cv2.split(img)
     alpha_channel = np.ones(b_channel.shape, dtype=b_channel.dtype) * mask_color[
         3]  # creating a dummy alpha channel image.
@@ -56,7 +57,10 @@ def make_mask(width, height, point_json, mask_color):
     result = base64.b64encode(buffer)
 
     # img = imread(io.BytesIO(base64.b64decode(result)))
-    # cv2.imwrite(name + ".png", img)
+    # cv2.imwrite("test" + ".png", img)
     return result
 
+
+if __name__=="__main__":
+    make_mask(720,960,'{"add":{"0":[186.666650390625,74.41666259765624,557.466650390625,112.81666259765625,465.066650390625,55.216662597656246],"1":[639.066650390625,667.2166625976562,243.066650390625,518.4166625976562,378.66665039062497,854.4166625976562,693.066650390625,927.6166625976562]},"object_no":13,"root":[576.666650390625,142.81666259765623,137.466650390625,97.21666259765625,133.86665039062498,427.21666259765624,159.066650390625,836.4166625976562,574.2666503906249,852.0166625976562,597.066650390625,508.8166625976562],"name":"person","del":{"0":[69.066650390625,199.21666259765624,663.066650390625,326.4166625976562,664.2666503906249,367.21666259765624,52.266650390624996,238.81666259765623]}}',"150,200,56,100")
 
