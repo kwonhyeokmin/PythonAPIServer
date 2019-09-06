@@ -13,8 +13,14 @@ def points():
             object_nm = data["object_nm"]
             base64_img = data["base64_img"]
             contour = contourApproximation(base64_img)
-            result = {"add": {}, "object_no": object_no, "root": contour, "del": {}, "name": object_nm}
-            return str(result)
+            root_contour = "["
+            for c in contour:
+                root_contour += str(c)
+                root_contour += ","
+            root_contour = root_contour[:-1]
+            root_contour += "]"
+            result = '{"add":{},"object_no":%d, "root":%s, "del":{}, "name":"%s"}' % (int(object_no), root_contour, object_nm)
+            return result
     except:
         return ""
 
